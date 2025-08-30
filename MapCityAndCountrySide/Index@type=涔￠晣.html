@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <title>乡镇公交线路图</title>
+
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+  
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Resource/Css/sj/sjCommon.css" rel="stylesheet" />
+    <script src="/Resource/js/jquery-1.11.3.min.js"></script>
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        .topP {
+            margin: 0px;
+            padding: 0px;
+        }
+        .top1 {
+            background:#40acb8;
+             height:10px;   
+              }
+        .menu1 { 
+            margin:0 auto;
+            padding:0px;
+            background:#40acb8;
+             /*height:48px;*/
+        }
+        .warp {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .selected {
+            background-color: #3cc7d7;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(".myUl li").click(function () {
+                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');
+            })
+
+        })
+    </script>
+</head>
+<body>
+
+ 
+    <div class="topP" id="topP">
+        <div class="top1"></div>
+        <div class="warp">
+            <div class="headDiv" id="headDiv">
+                <div class="logoAndTitleDiv">
+                    <div class="logoContent ">
+                        <div>
+                            
+                            
+
+                            <div class="logoImg mleft"></div>
+                            <div class="logoTitle mleft titleMarginTop">市民公交出行</div>
+                        </div>
+
+                        <div class="titleRight mright ">
+
+                            <div class="timeDiv mleft ">
+                                2025年08月30日
+                            </div>
+
+                            <div class="weathDiv mleft ">
+                                   <span class="cityclass"></span>&nbsp;
+                                   <img class="weatherPicClass" src="" />&nbsp;
+                                   <span class="weatherTxtClass"></span>&nbsp;
+                             </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="menu1" id="menu1">
+        <div class="warp">
+            <div class="navigate" id="navigate">
+                <ul class="myUl">
+                    <li class="firstLi" id="Li1"><a href="/RoadLineClassification/Index" class="navigate_a">松江公交线路</a></li>
+                    <li id="Li2"><a href="/FirstAndLastBus/Index" class="navigate_a">公交首末班</a></li>
+                    <li id="Li3"><a href="/RoadLinePivot/Index" class="navigate_a">枢纽站信息</a></li>
+                    <li id="Li4"><a href="/MapCityAndCountrySide/Index?type=城区" class="navigate_a">城区公交线路图</a></li>
+                    <li id="Li5"><a href="/MapCityAndCountrySide/Index?type=乡镇" class="navigate_a">乡镇公交线路图</a></li>
+                    <li id="Li6"><a href="/StationClassFind/Index" class="navigate_a">站点查询</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="bodyDiv" id="bodyDiv">
+      
+        <div class="siteMapDiv" id="siteMapDiv">
+            <div style="float:left;margin-right:5px;">
+                <img src="../Resource/Images/sj/home.png" />
+            </div>
+            <div>>乡镇公交线路图</div>
+        </div>
+
+        <div class="renderBody">
+            
+<script type="text/javascript" src="http://api.mapbar.com/api/mapbar31.2.js"></script>
+<script src="/Resource/js/sj/sjCommon.js"></script>
+
+<script type="text/javascript">
+    var songJiangFence = "";
+    $(function () {
+        var type = getQueryString("type");
+
+        if (type == "城区") {
+            $("#Li4").addClass('selected');
+        }
+        if (type == "乡镇") {
+            $("#Li5").addClass('selected');
+        }
+
+        initMap();
+
+        ShowFence(songJiangFence, maplet);
+    })
+
+    function getQueryString(key) {
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+        var result = window.location.search.substr(1).match(reg);
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+
+    var maplet = null; //地图对象
+    var marker = null; //标注对象
+    var menu = null;
+    var indexcity = "上海市";
+    var apiType = 1; //是否为明文经纬度
+    function initMap() {
+        try {
+            maplet = new Maplet("maps");
+        }
+        catch (ex) {
+            window.alert("地图加载失败，请刷新重试！");
+            return;
+        }
+        maplet.centerAndZoom(new MPoint(indexcity), 12); //设置默认城市和缩放级别
+        maplet.addControl(new MStandardControl());
+        //设置鱼骨 LEFT_TOP  LEFT_BOTTOM RIGHT_TOP  RIGHT_BOTTOM
+        maplet.controlCanvas.setLocation({ type: eval("Maplet.RIGHT_TOP") });
+
+
+        maplet.showLogo(false); //隐藏Logo 等等一些信息
+        maplet.showNavLogo(false);
+        maplet.clickToCenter = false; //点击了之后是否将点击的位置设置为中心点
+        maplet.setAutoZoom(); //设置更具地图自动适应
+        //maplet.customInfoWindow = true;
+        maplet.setOverviewLocation({ type: eval("Maplet.RIGHT_BOTTOM") })//设置鹰眼的位置
+        var width = $("#bodyDiv").width(); //document.documentElement.clientWidth - 10.5;
+        var height = $(window).height() - $("#topP").height() - $("#menu1").height() - $("#siteMapDiv").height() - 10;
+        maplet.resize(width, height); //地图初始化时候的大小
+
+        $("#srollDiv").height(height - 70)
+        $("#resultcontent").height(height - 70)
+        SearchRoadLine();
+
+    }
+
+
+    function SearchRoadLine() {
+
+        var mPointList = [];
+        $.ajax({
+            type: "GET",
+            url: "/MapCityAndCountrySide/Search",
+            data: { type: '涔￠晣' },
+            dataType: "json",
+            success: function (data) {
+                // $("#showTable  tr:not(:first)").remove();
+                var RoadLine = "";
+                var RoadTrend = "";
+                var Linelatlon = ""
+                var Updown = "";
+
+
+
+                if (data != null && data.length > 0) {
+                    //循环所有线路轨迹
+                    for (var i = 0; i < data.length; i++) {
+                        var pointList = [];
+                        RoadTrend = data[i].RoadTrend;
+                        RoadLine = data[i].RoadLine;
+                        if (data[i].Updown == 0)
+                        { Updown = "上行"; }
+                        else
+                        { Updown = "下行"; }
+                        Linelatlon = data[i].Linelatlon;
+
+                        if (Linelatlon != null && Linelatlon != undefined && Linelatlon != "") {
+                            var lonAndlat = Linelatlon.split(";");
+
+                            for (var ii = 0; ii < lonAndlat.length; ii++) {
+                                if (lonAndlat[ii] != null && lonAndlat[ii] != undefined && lonAndlat[ii] != "") {
+                                    var oneLonAndlat = lonAndlat[ii].split(",");
+                                    var mPoint = new MPoint(oneLonAndlat[0], oneLonAndlat[1]);
+                                    pointList.push(mPoint);
+                                }
+                            }
+                        }
+
+                        //    var polyline = new MPolyline(
+                        //     pointList,
+                        //    new MBrush(),
+                        //    new MInfoWindow("信息窗口标题", "信息窗口内容")
+
+
+                        //);
+
+
+                        //maplet.centerAndZoom(new MPoint(116.38749, 39.90515), 8);
+                        //maplet.addControl(new MStandardControl());
+                        maplet.showOverview(true);
+                        if (Updown == "上行") {
+                            var brush = new MBrush("#3DA5FC");
+                        }
+                        else
+                        { var brush = new MBrush("#3DA5FC"); }
+                        //brush.arrow = true;
+                        //brush.style = 1;
+                        brush.stroke = 5;
+                        //brush.fill = true;
+                        //brush.bgcolor = "black";
+                        //brush.bgtransparency = 35;
+
+                        var polyline = new MPolyline(pointList, brush, null);
+                        polyline.RoadLine = RoadLine;
+                        maplet.centerAndZoom(new MPoint(121.18631, 31.02755), 12)
+                        maplet.addOverlay(polyline);
+                    } //循环完毕
+
+                }
+
+            }
+        });
+        
+    }
+
+    function tdOnclick(roadname) {
+        //        $("td[name='canclick']").each(function () {
+        //            $(this).css('background-color', 'white');
+        //            $(this).css('color', 'black');
+        //        })
+        //        $(o).css('background-color', '#40acb8');
+        //        $(o).css('color', 'white');
+        //var roadname = $(o).text();
+        window.open("/RoadLineFind/Index?roadline=" + roadname);
+    }
+
+    function ShowUpdown(roadline)
+    {
+        var updownid = $('#' + roadline);
+        var imgup = $('#imgup');
+        var imgdown=$('#imgdown')
+        if (updownid.length > 0) {
+            if (updownid.css("display") == "none")
+            {
+                updownid.css("display", "");
+                imgup.css("display", "");
+                imgdown.css("display", "none");
+            }
+            else {
+                updownid.css("display", "none");
+                imgup.css("display", "none");
+                imgdown.css("display", "");
+            }
+        }
+
+    }
+
+
+    function MouseOver(roadline) {
+
+       var polylines = maplet.getPolylines();
+       for (var ii = 0; ii < polylines.length; ii++) {
+           var polyline = polylines[ii];
+           var mybrush = polyline.brush;
+           if (polyline.RoadLine ==roadline) {
+               mybrush.color = "red";
+               mybrush.stroke=9;
+               mybrush.transparency = 100;
+               polyline.setBrush(mybrush);
+               window.oldline = polyline.RoadLine;
+           }
+          else {
+              mybrush.color = "#3DA5FC";
+              mybrush.transparency = 30;
+              mybrush.stroke = 5;
+               polyline.setBrush(mybrush);
+           } 
+       } 
+
+    }
+</script>
+<style>
+    .showMap
+    {
+        width: 100%;
+        height: 800px;
+        background-color: green;
+        float:left;
+    }
+    
+    .showContent
+    {
+        width: 320px;
+        height: 32px;
+        background-color: white;
+        position: absolute;
+        /*left: 10px;*/
+        /*top: 10px;*/
+        overflow-y: auto;
+        z-index: 1001;
+    }
+    .contenttitle
+    {
+        height: 30px;
+        background-color: #E3F3F5; /*#40acb8;*/
+        font-size: 16px;
+    }
+    .contentline
+    {
+        height: 30px;
+        background-color: #40acb8;
+        font-size: 16px;       
+        /*text-align: center;*/
+        color: White;
+    }
+    .contentInfo
+    {
+        font-size: 12px;
+    }
+    .contentcard
+    {
+        border: 1px solid #3385ff;
+        margin-top: 5px;
+    }
+    
+    .cardlist
+    {
+        width: 325px;
+        position: absolute;
+        z-index: 1002;
+    }
+    .cardlist .card
+    {
+        pointer-events: auto;
+        width: 100%;
+        margin-top: 30px;
+        box-sizing: border-box;
+        padding: 3px;
+        background: #fff;
+        box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+        overflow: auto;
+        overflow-x: hidden;
+        position: relative;
+        border-radius: 2px;
+        -webkit-transition: max-height .5s;
+        transition: max-height .5s;
+    }
+     ::-webkit-scrollbar
+    {
+        width: 6px;
+        background-color: #F5F5F5;
+    }
+    ::-webkit-scrollbar-thumb
+    {
+        background-color: #999;
+    }
+    .linejp:hover{color:Black;}
+    
+</style>
+<div class="container" style="width:100%;height:100%;position:relative;overflow:hidden;padding-left:5px;">
+<div class="showMap" id="maps">
+</div>
+ <div class="showContent">
+       <div class="contenttitle"><label style="margin:5px 5px;">乡镇公交线路图</label></div>
+ </div>
+ <div id="cards-level1" class="cardlist" style="padding-left: 0px;">
+
+
+        <div id="resultcontent" class="card animated-card" style="z-index: 100;">
+
+            
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江40路')" onmouseover="MouseOver('松江40路')" style="margin: 5px 5px;">松江40路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江41路')" onmouseover="MouseOver('松江41路')" style="margin: 5px 5px;">松江41路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江42路')" onmouseover="MouseOver('松江42路')" style="margin: 5px 5px;">松江42路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江42路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江42路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江42路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自九亭地铁站起经横泾路、九里亭路、沪亭北路、沪松公路、九泾公路、涞寅路、寅西路、涞坊路、九泾公路、涞寅路、沪亭北路、九里亭路、横泾路至九亭地铁站。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江42路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自九亭地铁站起经横泾路、九里亭路、沪亭北路、涞寅路、九泾公路、涞坊路、寅西路、涞寅路、九泾公路、沪松公路、沪亭北路、九里亭路、横泾路至九亭地铁站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江43路')" onmouseover="MouseOver('松江43路')" style="margin: 5px 5px;">松江43路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江43路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江43路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江43路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自北场停车场起经沪亭南路、沪亭路、沪亭北路、涞寅路、涞亭北路、涞坊路、沪亭北路、沪松公路、九新公路、中心路、易富路、沪亭南路至北场停车场
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江43路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自北场停车场起经沪亭南路、易富路、中心路、九新公路、沪松公路、沪亭北路、涞坊路、涞亭北路、涞寅路、沪亭北路、沪亭路、沪亭南路至北场停车场
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江44路')" onmouseover="MouseOver('松江44路')" style="margin: 5px 5px;">松江44路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江44路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江44路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江44路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自雪家桥路站起经雪家桥路、沪亭南路、沪亭路、沪松公路、九杜路、涞坊路、九泾公路、洋河浜路、寅青路、沧泾路、九泾公路、涞坊路、九杜路、沪松公路、沪亭路、沪亭南路、雪家桥路至雪家桥路站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江45路')" onmouseover="MouseOver('松江45路')" style="margin: 5px 5px;">松江45路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江45路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江45路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江45路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                泗泾汽车站、泗泾地铁站、泗泾医院、泗通路三祥路、三祥路刘五路、刘五路、尹家宅、青松村、银河东区、锦昌花苑、紫竹花苑、古楼路嘉松公路、鼓楼路、新家园路、泗凤公路、胡家浜、通波泾、外婆泾、横港小区、西安路、农工商招呼站、泗泾公园、社保中心、泗泾镇政府、泗泾轻轨站、泗泾汽车站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江46路')" onmouseover="MouseOver('松江46路')" style="margin: 5px 5px;">松江46路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江46路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江46路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江46路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自泗泾汽车站起经泗宝路、泗通路、祥严路、横港公路、泗陈公路、方泗公路、九干公路、沪松公路、叶家公路、鼓浪路、横港公路、泗宝路至泗泾汽车站。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江46路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自泗泾汽车站起经泗宝路、横港公路、鼓浪路、叶家公路、沪松公路、九干公路、方泗公路、泗陈公路、横港公路、祥严路、泗通路、泗陈公路、横港公路、泗宝路至泗泾汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江47路')" onmouseover="MouseOver('松江47路')" style="margin: 5px 5px;">松江47路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江47路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江47路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江47路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自横港路汽车站起经德悦路、洞业路、古楼公路、横港公路、泗宝路、泗通路、祥严路、横港公路、鼓浪路、泗泾江川路、沪松公路、泗砖公路、陈泾路、高技路、莘砖公路至漕河泾开发区松江园区。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江47路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自漕河泾开发区松江园区起经莘砖公路、泗砖公路、江河路、高技路、陈泾路、泗砖公路、沪松公路、泗泾江川路、鼓浪路、横港公路、祥严路、泗通路、泗宝路、横港公路、古楼公路、洞业路、德悦路至横港路汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江48路')" onmouseover="MouseOver('松江48路')" style="margin: 5px 5px;">松江48路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江48路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江48路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江48路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自泗泾汽车站起经泗宝路-横港公路-泗陈公路-赵非公路-九干公路-沐川路-泗博路-米易路-泗陈公路-文化路-鼓浪路-江川路-沪松公路-古楼公路-嘉松南路-塘砖路-城隆路-洞照路至洞照路汽车站
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江48路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自洞照路汽车站起经洞照路-城隆路-塘砖路-嘉松南路-佘月路-泗凯南路-古楼公路-沪松公路-江川路-鼓浪路-文化路-泗陈公路-米易路-泗博路-沐川路-九干公路-赵非公路-泗陈公路-横港公路-泗宝路至泗泾汽车站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江49路')" onmouseover="MouseOver('松江49路')" style="margin: 5px 5px;">松江49路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江49路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江49路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江49路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自春申公交枢纽站起经站前路、陈春路、场西路、明中公路、明中路、明华路、新南路、场东路、站前路至春申公交枢纽站。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江49路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自春申公交枢纽站起经站前路、场东路、新南路、明华路、明中路、明中公路、场西路、陈春路、站前路至春申公交枢纽站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江50路')" onmouseover="MouseOver('松江50路')" style="margin: 5px 5px;">松江50路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江50路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江50路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江50路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自新桥火车站起经新育路-新站路-新镇街-陈春路-新育路-明中路-明中西路-新庙三公路-长兴东路-新农河路-蔡家浜东路-张泾路至洞泾汽车站
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江50路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自洞泾汽车站起经张泾路-蔡家浜东路-新农河路-长兴东路-新庙三公路-明中西路-明中路-新育路-陈春路-新镇街-新站路-新育路至新桥火车站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江51路')" onmouseover="MouseOver('松江51路')" style="margin: 5px 5px;">松江51路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江53路')" onmouseover="MouseOver('松江53路')" style="margin: 5px 5px;">松江53路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江55路')" onmouseover="MouseOver('松江55路')" style="margin: 5px 5px;">松江55路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江56路')" onmouseover="MouseOver('松江56路')" style="margin: 5px 5px;">松江56路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江57路')" onmouseover="MouseOver('松江57路')" style="margin: 5px 5px;">松江57路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江60路')" onmouseover="MouseOver('松江60路')" style="margin: 5px 5px;">松江60路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江61路')" onmouseover="MouseOver('松江61路')" style="margin: 5px 5px;">松江61路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江65路')" onmouseover="MouseOver('松江65路')" style="margin: 5px 5px;">松江65路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江70路')" onmouseover="MouseOver('松江70路')" style="margin: 5px 5px;">松江70路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江70路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江70路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江70路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                从泖港汽车站起，经新乐路、泖港中心路、新宾路、中天路、如日路、问涵路、杜库公路、泖塘路、泖塘公路、叶新公路、黄桥中心路、北十一勤公路、黄桥公路、蔷薇娄路、新五公路、叶新支路、西兴公路、兴旺路、中库路、南三公路、五甪公路，至洙桥村
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江70路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                从洙桥村起，经五甪公路、南三公路、中库路、兴旺路、西兴公路、叶新支路、新五公路、蔷薇娄路、黄桥公路、北十一勤公路、黄桥中心路、叶新公路、泖塘公路、泖塘路、杜库公路、问涵路、如日路、中天路、新宾路、泖港中心路，至泖港汽车站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江71路')" onmouseover="MouseOver('松江71路')" style="margin: 5px 5px;">松江71路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江71路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江71路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江71路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自泖港汽车站起经新乐路、泖港中心路、新宾路、中天路、叶新公路、腰泾公路、新三公路、中二路、新胡路、中四公路、叶新公路、朱定公路、齐心路、东厍公路、中环公路、五朱公路、叶新支路、叶新公路、茹塘公路至长浜村。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江71路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自长浜村起经茹塘公路、叶新公路、叶新支路、五朱公路、中环公路、东厍公路、齐心路、朱定公路、叶新公路、中四公路、新胡路、中二路、新三公路、腰泾公路、叶新公路、中天路、新宾路、泖港中心路、新乐路至泖港汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江72路')" onmouseover="MouseOver('松江72路')" style="margin: 5px 5px;">松江72路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江72路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江72路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江72路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自泖港汽车站起经新乐路、中兴路、新宾路、中天路、叶新公路、焦家东路、黄家埭路、百家公路、长浜路、松金公路、小马港路、泖新南路、叶新公路、涵养林公路、塘口公路、松金公路、叶新公路、中天路、新宾路、中兴路、新艳路、辰塔路、新宾路、中兴路、新乐路至泖港汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江75路')" onmouseover="MouseOver('松江75路')" style="margin: 5px 5px;">松江75路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江76路')" onmouseover="MouseOver('松江76路')" style="margin: 5px 5px;">松江76路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江76路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江76路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江76路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自新浜汽车站起经中心街、新浜共青路、林赵路、赵王路、香长公路、三秀路、曹西路、胡曹路、叶新公路、文工路、泾甪路、胡甪路、甪彭路、新彭路、林天路、新工北路、上虞路、胡甪路、叶新公路、新工南路、新绿街、新颖路至新浜汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江79路')" onmouseover="MouseOver('松江79路')" style="margin: 5px 5px;">松江79路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江79路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江79路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江79路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自泖新村起经石泖公路、夏家埭公路、新松公路、松蒸公路、石湖新路、东栅路、广庵路、闵塔路、张闵公路、张庄公路、双丰路、双桥公路、双金公路、新村公路、陶家村公路、塔汇公路、育新路、辰塔路、甘德路、长东公路、双汇公路至双汇村。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江79路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自双汇村起经双汇公路、长东公路、甘德路、辰塔路、育新路、塔汇公路、陶家村公路、新村公路、双金公路、双桥公路、双丰路、张庄公路、张闵公路、闵塔路、广庵路、东栅路、石湖新路、松蒸公路、新松公路、夏家埭公路、张村浜路至石湖荡。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江80路')" onmouseover="MouseOver('松江80路')" style="margin: 5px 5px;">松江80路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江80路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江80路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江80路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自石湖荡汽车站起经东栅路、广庵路、闵塔公路、东三路、五朱公路、新五公路、五厍大街、南三公路至洙桥村。
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江80路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自洙桥村起经南三公路、五厍大街、新五公路、五朱公路、东三路、闵塔公路、广庵路、东栅路至石湖荡汽车站。
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江81路')" onmouseover="MouseOver('松江81路')" style="margin: 5px 5px;">松江81路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江81路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江81路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江81路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自小昆山公交枢纽站起经翔昆路、昆泖公路、西泾港公路、玉昆路、翔昆路、平原公路、平原街、昆港公路、崇南公路、中德路、文翔路至小昆山公交枢纽站
+                        </div>  
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江81路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                下行</label>
+                                自小昆山公交枢纽站起经翔昆路、文翔路、中德路、崇南公路、昆港公路、平原街、平原公路、翔昆路、玉昆路、西泾港公路、昆泖公路至小昆山公交枢纽站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江83路')" onmouseover="MouseOver('松江83路')" style="margin: 5px 5px;">松江83路</label>
+                            
+                        </div> 
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江84路')" onmouseover="MouseOver('松江84路')" style="margin: 5px 5px;">松江84路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江84路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江84路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江84路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                九亭地铁站、沪松公路九杜路、沪松公路九谊路、九泾路沪松公路、九泾路涞寅路、涞寅路寅西路、寅西路、涞坊路寅西路、涞坊路寅青路、九泾公路涞坊路、九泾公路涞寅路、涞寅路上海源花城、涞寅路摩卡小城、涞寅路绿庭尚城、沪亭北路贝尚湾、沪亭北路沪松公路、九亭地铁站
+                        </div>  
+                </div> 
+                <div class="contentcard">  
+                <div class="contentline">
+                            <img style="margin-left:5px;" src="../../Resource/Images/sj/bus001.png" />
+                            <label class="linejp"  onclick="tdOnclick('松江89路')" onmouseover="MouseOver('松江89路')" style="margin: 5px 5px;">松江89路</label>
+                               <img id="imgdown" style="margin-left:5px;float:right;" onclick="ShowUpdown('松江89路')" src="../../Resource/Images/sj/drop002.png" />
+                               <img id="imgup" style="margin-left:5px;float:right;display:none;" onclick="ShowUpdown('松江89路')" src="../../Resource/Images/sj/drop001.png" />
+                            
+                        </div> 
+                            <div class="contentInfo" style="margin-top:5px;display:none;" id='松江89路'>
+                            <label class="updown" style="font-size: 12px; background-color: #3385ff; color: White;">
+                                上行</label>
+                                自九亭地铁站起经横泾路、沪亭北路、沪松公路、九亭大街、九新公路、中心路、易富路、沪亭南路、九亭大街、虬泾路、蒲汇路、沪亭路、沪松公路至九亭地铁站。
+                        </div>  
+                </div> 
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    
+    </div>
+
+    <div class="footBody">
+
+        <div class="footDiv">
+
+            <div class="siteInfo">
+                版权所有：上海松江公共交通有限公司沪ICP备<br />
+                地址：松江区茸惠路558号&nbsp;邮编：201613&nbsp;服务电话：021-57821111&nbsp;邮箱:sjgjts@163.com
+            </div>
+
+            <div class="weChat">
+                <div>
+                    松江公交官方微信
+                </div>
+                <div>
+
+                    <img src="../Resource/Images/sj/webChatUrl2.jpg" style="width:95px;" />
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

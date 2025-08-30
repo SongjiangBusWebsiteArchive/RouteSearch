@@ -1,0 +1,585 @@
+﻿
+    body {
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
+
+    .showMap {
+        width: 100%;
+        height: 800px;
+        background-color: green;
+        float:left;
+    }
+
+
+   @media screen and (min-width:0px) and (max-width:1366px) 
+    {
+        .showSearch {
+            width: 300px;
+            height: 700px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+            .picShowDiv {
+        height: 420px;
+        width: 700px;
+        position: relative;
+        left: 350px;
+        top: 10px;
+        background-color: #F3F3F3;
+        z-index: 99;
+        float: left;
+        margin-top: -453px
+    }
+
+
+    }
+
+
+     @media screen and (min-width:1366px)
+    {
+        .showSearch {
+            width: 420px;
+            height: 700px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+            .picShowDiv {
+        height: 420px;
+        width: 700px;
+        position: relative;
+        left: 350px;
+        top: 10px;
+        background-color: #F3F3F3;
+        z-index: 99;
+        float: left;
+        margin-top: -453px
+    }
+
+
+    }
+    
+          /*.showSearch {
+        width: 300px;
+        height: 700px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }*/
+    /*@media screen and (min-width:1080px)
+    {
+        .bodyDiv {width: 780px;}
+    }*/
+    @media screen and (min-width:1366px)
+    {
+        .showSearch {
+        width: 300px;
+        height: 700px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+    }
+    @media screen and (min-width:1920px)
+    {
+       .showSearch {
+        width: 307px;
+        height: 820px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+
+    .picShowDiv {
+        height: 478px;
+        width: 1000px;
+        position: relative;
+        left: 350px;
+        top: 10px;
+        background-color: #F3F3F3;
+        z-index: 99;
+        float: left;
+        margin-top: -712px;
+    }
+
+    }
+
+
+   
+
+
+
+    #srollDiv {
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    .search-button {
+        pointer-events: auto;
+        background: url("/Resource/Images/sj/searchbox_f1755771.png") no-repeat 0 -76px #2e77e5;
+        width: 57px;
+        height: 38px;
+        float: left;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 0 2px 2px 0;
+        box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+    }
+
+    .serachSelect {
+        width: 100%;
+        width: 243px;
+        height: 38px;
+        font-size:17px;
+    }
+
+    .showMap .showDiv {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .roadLineTitle {
+        width: 100%;
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        background-color: #188AE0;
+    }
+
+    .roadLienMessage {
+        background-color: #E7F3FC;
+        width: 100%;
+    }
+
+    .marginClass {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .toDirectTitleDiv {
+        margin-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .toDirectConentDiv {
+        border: 1px solid #65BEFF;
+        background-color: white;
+        min-height: 30px;
+    }
+
+    .roadLineMessageTable {
+        width: 100%;
+    }
+
+        .roadLineMessageTable tr td {
+            width: 33.33%;
+            text-align: left;
+            background-color: #E7F3FC;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+
+    .stationList {
+        background-color: white;
+        width: 100%;
+        padding-top: 1px;
+        padding-bottom: 10px;
+    }
+
+
+    .stationTableDiv {
+        margin-top: 10px;
+        border: 1px solid #8BCDD4;
+    }
+
+    .stationTable {
+        width: 100%;
+    }
+
+    .column1 {
+        text-align: left;
+        padding-left: 5px;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .column_other {
+        text-align: center;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .rowHeader {
+        font-weight: bold;
+        background-color: #40ACB8;
+        color: white;
+    }
+
+    .myLineHeight {
+        line-height: 22px;
+    }
+
+
+
+    /*.picShowDiv {
+        height: 478px;
+        width: 700px;
+        position: relative;
+        left: 350px;
+        top: 10px;
+        background-color: #F3F3F3;
+        z-index: 99;
+        float: left;
+        margin-top: -524px;
+    }*/
+
+    .headTile {
+        background-color: #40ACB8;
+        color: white;
+        line-height: 27px;
+        height: 27px;
+        padding-left: 10px;
+    }
+
+        .headTile img {
+            float: right;
+            width: 25px;
+        }
+
+    .topId {
+        width:100%;
+    }
+    .topId table  {
+        width:100%;
+    }
+
+        .topId table tr tb{
+            padding-left:2px;
+        }
+
+     .picList {
+        width: 100%;
+    }
+
+
+
+    .timeFolderArea {
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: absolute;
+        //height: 100%;
+        height: 389px;
+        /* top: 130px; */
+        left: 0px;
+        right: 0px;
+    }
+
+    .row {
+        float: left;
+        /*padding-bottom: 10px;
+        margin-bottom: 15px;*/
+        width: 100%;
+    }
+
+    .toggleClass {
+        position: relative;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    .timeDiv {
+        position: relative;
+        /*left: 20px;*/
+        height: 30px;
+        margin-bottom: 10px;
+        top: 0px;
+    }
+    .toggleIcon {
+        background: url(../../../Resource/Images/imgprev/icon3.png) no-repeat;
+        position: relative;
+        left: 0px;
+        top: 18px;
+        width: 15px;
+        height: 15px;
+    }
+
+
+    .timeId {
+        font-size: 14px;
+        font-weight: bold;
+        width: 180px;
+        color: #009944;
+        top: 100px;
+        margin-left:20px;
+    }
+
+
+    .displayImagesArea ul {
+        position: relative;
+        top: 40px;
+        left: 34px;
+        right: 60px;
+        bottom: -20px;
+        width: 1000px;
+        list-style: none;
+        float: left;
+        margin: 0px;
+    }
+
+    .displayImagesArea li {
+        width: 287px;
+        height: 250px;
+        float: left;
+        margin-right: 40px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        background-color: white;
+    }
+
+    .singleDisplay {
+        position: relative;
+        width: 287px;
+        height: 250px;
+        margin-right: 40px;
+        top: 5px;
+        bottom: 10px;
+        margin-bottom: 0px;
+    }
+
+    .capitalImage {
+        position: relative;
+        left: 6px;
+        width: 276px;
+        height: 206px;
+        background-size: 276px 206px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+    .capitalNumber {
+        position: absolute;
+        left: 8px;
+        top: 216px;
+        bottom: 16px;
+        color: #4d4d4d;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+
+    .cardlist {
+        width: 300px;
+        position: relative;
+        z-index: 0;
+        display:none;
+    }
+
+    .cardlist .card {
+            pointer-events: auto;
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+            padding: 10px;
+            background: #fff;
+            box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+            overflow: auto;
+            overflow-x: hidden;
+            position: relative;
+            border-radius: 2px;
+            -webkit-transition: max-height .5s;
+            transition: max-height .5s;
+        }
+
+
+
+    .bus-sub-line-item .top {
+        border: 1px solid #3385ff;
+        color: #fff;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .bus-sub-line-item .top {
+        border: 1px solid #3385ff;
+        color: #fff;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .bus-sub-line-item .top-title {
+        background-color: #3385ff;
+        line-height: 31px;
+        float: left;
+        min-width: 75px;
+        margin-right: 12px;
+        text-align: center;
+        height: 75px;
+        padding-top: 25px;
+    }
+
+    .bus-sub-line-item .top-line-num {
+        font-size: 24px;
+    }
+
+    .bus-sub-line-item .top-line-meta {
+        font-size: 12px;
+        background: #0c6eff;
+        border-radius: 5px;
+        margin-top: 8px;
+        line-height: 19px;
+        width: 41px;
+        margin: 0 auto;
+    }
+
+    .bus-sub-line-item .top-content {
+        overflow: hidden;
+        color: #3385ff;
+        padding-top: 5px;
+    }
+
+    .bus-sub-line-item .name {
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .bus-sub-line-item .bline-row {
+        line-height: 20px;
+    }
+
+    .bus-sub-line-item .bline-row {
+        line-height: 20px;
+    }
+
+    .bus-sub-line-item .arrow {
+        background: url(http://webmap1.map.bdstatic.com/wolfman/static/common/images/ui3/transparent_e6f73ae.png) no-repeat 0 0;
+        width: 15px;
+        height: 10px;
+        margin: 0 5px;
+    }
+
+    .bus-sub-line-item .content {
+        /* display: none;*/
+        padding: 0 12px 10px;
+        border: 1px solid #e4e6e7;
+        border-top: 0;
+    }
+
+    .bus-sub-line-item .fold-wrap {
+        line-height: 35px;
+        overflow: hidden;
+    }
+
+    .bus-sub-line-item .fold {
+        float: left;
+        padding-left: 25px;
+        background: url(http://webmap0.map.bdstatic.com/wolfman/static/common/images/ui3/bussub_bf9e598.png) no-repeat 0 -56px;
+    }
+
+    .cardlist .card a {
+        text-decoration: none;
+    }
+
+    .bus-sub-line-item .content a {
+        color: #36C;
+    }
+
+    ul, ol {
+        list-style: none;
+    }
+
+    .bus-sub-line-item .content .station-list {
+        padding-left: 6px;
+    }
+
+        .bus-sub-line-item .content .station-list.sub-list {
+            padding-left: 0;
+        }
+
+        .bus-sub-line-item .content .station-list li {
+            line-height: 30px;
+            position: relative;
+        }
+
+    .bus-sub-line-item .name-wrap {
+        margin-right: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cardlist .card a {
+        text-decoration: none;
+    }
+
+    .bus-sub-line-item .content a {
+        color: #36C;
+    }
+
+    .bus-sub-line-item .content .station-name {
+        float: left;
+    }
+
+    a {
+        text-decoration: none;
+        color: #0260d4;
+    }
+
+    .poi-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .bus-sub-line-item .street-view-point {
+        background-image: url(/Resource/images/webcam.png);
+        width: 18px;
+        height: 18px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        background-size: 18px; /*background-position: 0 -259px;*/
+        float: right;
+    }
+
+    .no-1 {
+        background-color: #00C0FF;
+        width: 32px;
+        display: inline-block;
+        color: White;
+        vertical-align: middle;
+    }
+
+    .col-l {
+        text-align: center;
+    }
+
+    table td {
+        word-wrap: break-word;
+        word-break: break-all;
+        /*vertical-align: top;*/
+    }
+
+    .camera-icon {
+        background-image: url(/Resource/images/webcam.png);
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        background-size: 18px;
+        float: right;
+    }

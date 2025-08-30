@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <title>各枢纽站松江公交线路</title>
+
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+  
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Resource/Css/sj/sjCommon.css" rel="stylesheet" />
+    <script src="/Resource/js/jquery-1.11.3.min.js"></script>
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        .topP {
+            margin: 0px;
+            padding: 0px;
+        }
+        .top1 {
+            background:#40acb8;
+             height:10px;   
+              }
+        .menu1 { 
+            margin:0 auto;
+            padding:0px;
+            background:#40acb8;
+             /*height:48px;*/
+        }
+        .warp {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .selected {
+            background-color: #3cc7d7;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(".myUl li").click(function () {
+                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');
+            })
+
+        })
+    </script>
+</head>
+<body>
+
+ 
+    <div class="topP" id="topP">
+        <div class="top1"></div>
+        <div class="warp">
+            <div class="headDiv" id="headDiv">
+                <div class="logoAndTitleDiv">
+                    <div class="logoContent ">
+                        <div>
+                            
+                            
+
+                            <div class="logoImg mleft"></div>
+                            <div class="logoTitle mleft titleMarginTop">市民公交出行</div>
+                        </div>
+
+                        <div class="titleRight mright ">
+
+                            <div class="timeDiv mleft ">
+                                2025年08月30日
+                            </div>
+
+                            <div class="weathDiv mleft ">
+                                   <span class="cityclass"></span>&nbsp;
+                                   <img class="weatherPicClass" src="" />&nbsp;
+                                   <span class="weatherTxtClass"></span>&nbsp;
+                             </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="menu1" id="menu1">
+        <div class="warp">
+            <div class="navigate" id="navigate">
+                <ul class="myUl">
+                    <li class="firstLi" id="Li1"><a href="/RoadLineClassification/Index" class="navigate_a">松江公交线路</a></li>
+                    <li id="Li2"><a href="/FirstAndLastBus/Index" class="navigate_a">公交首末班</a></li>
+                    <li id="Li3"><a href="/RoadLinePivot/Index" class="navigate_a">枢纽站信息</a></li>
+                    <li id="Li4"><a href="/MapCityAndCountrySide/Index?type=城区" class="navigate_a">城区公交线路图</a></li>
+                    <li id="Li5"><a href="/MapCityAndCountrySide/Index?type=乡镇" class="navigate_a">乡镇公交线路图</a></li>
+                    <li id="Li6"><a href="/StationClassFind/Index" class="navigate_a">站点查询</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="bodyDiv" id="bodyDiv">
+      
+        <div class="siteMapDiv" id="siteMapDiv">
+            <div style="float:left;margin-right:5px;">
+                <img src="../Resource/Images/sj/home.png" />
+            </div>
+            <div>>各枢纽站松江公交线路</div>
+        </div>
+
+        <div class="renderBody">
+            
+<script type="text/javascript">
+    $(function () {
+        $("#Li3").addClass('selected');
+            $.getJSON("/RoadLinePivot/GetList", {},
+             function (data) {
+                 var ddlist = data;
+                 var str = "";
+                 if (ddlist != null && ddlist.length > 0) {
+                     //循环外层
+                     for (var i = 0; i < ddlist.length; i++) {
+                         var smlist = ddlist[i];
+                         var roadId = 1;
+                         if (smlist != null && smlist.length > 0) {
+                             //循环添加titie
+                             var stationtitle = "";
+                             var stationcount = "(" + smlist.length + "条)";
+                             var stationname = smlist[0].Name;
+                             var stationdecr = smlist[0].Description;
+                             if (stationdecr == "") {
+                                 stationtitle = stationname + "公交线路";
+                             }
+                             else {
+                                 stationtitle = stationname + "(" + stationdecr + ")" + "公交线路";
+                             }
+                             str += "<div class=\"contentDiv\">";
+                             str += " <div class=\"contentTitle\" style=\"height:25px;font-size:14px; margin:5px 3px;\">";
+                             str += stationtitle;
+                             str += "<label style=\"color:#3385ff;\"><a name='" + stationname + "'>" + stationcount + "</a></label>";
+                             str += "</div></div>";
+                             str += "<div class=\"contentDiv\">";
+                             str += " <table class=\"contentTable\">";
+                             for (var ii = 0; ii < smlist.length; ii++) {
+                                 //循环添加线路
+                                 if (roadId == 7) {
+                                     str += "<td  name='canclick' onclick='tdOnclick(this)' style=\"width:16%\"><label style='margin-top:6px;'>" + smlist[ii].RoadLine + "</label></td></tr>";
+                                     roadId = 1;
+                                 }
+                                 else if (roadId == 1) {
+                                     str += "<tr><td  name='canclick' onclick='tdOnclick(this)' style=\"width:14%\"><label style='margin-top:6px;'>" + smlist[ii].RoadLine + "</label></td>";
+                                     roadId++;
+                                 }
+                                 else {
+                                     str += "<td  name='canclick' onclick='tdOnclick(this)' style=\"width:14%\"><label style='margin-top:6px;'>" + smlist[ii].RoadLine + "</label></td>";
+                                     roadId++;
+                                 }
+                             }
+                             //完整考虑,美化页面,补全td
+                             if (smlist.length % 7 != 0) {
+                                 var bucount = 7 - (smlist.length % 7);
+                                 for (var sj = 0; sj < bucount; sj++) {
+                                     str += "<td style=\"width:14%\></td>";
+                                 }
+                                 str += "</tr>";
+                             }
+                            
+                         }
+                         str += "</table>";
+                         str += "</div>";
+
+                     }
+                 }
+                 $('#rightInfo').html(str);
+             })
+    })
+    function tdOnclick(o) {
+//        $("td[name='canclick']").not($(o)).each(function () {
+//            $(this).css('background-color', 'white');
+//            $(this).css('color', 'black');
+//            //$(this).hover(function () { $(this).css('background-color', '#40acb8'); $(this).css('color', 'white'); }, function () { $(this).css('background-color', 'white'); $(this).css('color', 'black'); })
+//        })   
+//        $(o).css('background-color', '#40acb8');
+//        $(o).css('color', 'white');
+        var roadname = $(o).text();
+        //window.open("/RoadLineFind/Index?roadline=" + roadname);
+        window.location.href = "/RoadLineFind/Index?roadline=" + roadname;
+    }
+</script>
+<style>
+     .contentMain{
+            margin: 5px 5px;
+            /*border: 1px solid green;*/
+        }
+     .contentLeft
+     {
+           border: 1px solid #3385ff;
+           height:auto;
+     }
+   .contentDiv {
+            margin-left: 210px;
+            border: 1px solid #3385ff;
+            margin-bottom:-1px;/*边框不重叠*/        
+        }
+      
+
+        .contentTable {
+            width: 100%;
+            /*border: 1px solid red;*/
+            text-align: center;
+            border-collapse: separate;
+            border-spacing: 0px 0px;
+        }
+          .contentTable tr {
+                height: 28px;
+            }
+
+                .contentTable tr td {
+                    border: 0px solid #F5F5F5;
+                }
+                
+                    .rodalineTd {
+            background-color: #EDEDED;
+        }
+
+        
+         /* 所有class为top_ul的div中的ul样式 */
+ div.top_ul ul
+{
+    list-style:none; /* 去掉ul前面的符号 */
+    margin: 0px; /* 与外界元素的距离为0 */
+    padding: 0px; /* 与内部元素的距离为0 */
+    width: auto; /* 宽度根据元素内容调整 */
+}
+/* 所有class为top_ul的div中的ul中的li样式 */
+  div.top_ul ul li
+{
+    float:left; /* 向左漂移，将竖排变为横排 */
+}
+
+.leftpivot
+{
+    height:28px;
+    font-size:14px;
+    /*text-align:center;*/
+}
+ .contentTable label{font-weight:normal}
+   td[name="canclick"]:visited
+  {
+     background-color: black;
+     color:White;
+   } 
+  td[name="canclick"]:hover
+ {
+     background-color: #40acb8;
+     color:White;
+ }
+
+
+</style>
+<div class="contentMain">
+   <div class="top_ul">
+    <ul style="float:left;">
+     <li>
+     <div class="contentLeft">
+         <div class="leftInfo" style="text-align:center;height:30px;width:197px;font-size:20px;background-color:#3385ff;color:White;">枢纽站信息</div>
+         
+    </div>
+     </li>
+    </ul>
+    <div class="rightInfo" id="rightInfo">
+   
+  </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+        </div>
+    
+    </div>
+
+    <div class="footBody">
+
+        <div class="footDiv">
+
+            <div class="siteInfo">
+                版权所有：上海松江公共交通有限公司沪ICP备<br />
+                地址：松江区茸惠路558号&nbsp;邮编：201613&nbsp;服务电话：021-57821111&nbsp;邮箱:sjgjts@163.com
+            </div>
+
+            <div class="weChat">
+                <div>
+                    松江公交官方微信
+                </div>
+                <div>
+
+                    <img src="../Resource/Images/sj/webChatUrl2.jpg" style="width:95px;" />
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

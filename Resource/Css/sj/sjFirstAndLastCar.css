@@ -1,0 +1,74 @@
+﻿  /*searchDiv 搜索框*/
+        .searchDiv {
+            margin: 0 5px;
+            background-color: #DADADA;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .allChoseDiv {
+            width:700px;
+            margin: 0 auto;
+            line-height: 20px;
+            height: 20px;
+            vertical-align: central;
+        }
+
+        .choseDiv {
+            float: left;
+            background-color: white;
+            margin-left: 10px;
+            margin-top: 6px;
+            width: 100px;
+            text-align: center;
+            border-radius: 5px 5px;
+            font-size:14px;
+        }
+
+        .searchInputDiv {
+			float:left;
+			margin-left: 10px;
+			width: 220px;
+			margin-top: 2px;
+        }
+
+        .serarchBtn {
+            margin-left: 10px;
+            width: 50px;
+            background-color: #0094FF;
+            border-radius: 5px 5px;
+        }
+
+        /*contentDiv 内容*/
+        .contentDiv {
+            margin: 0 5px;
+        }
+
+        .contentTable {
+            width: 100%;
+            /*border: 1px solid red;*/
+            text-align: center;
+            border-collapse: separate;
+            border-spacing: 0px 10px;
+        }
+
+       .contentTable tr {
+			height: 28px;
+        }
+
+       .contentTable tr td {
+			border: 1px solid #F5F5F5;
+        }
+
+        .rodalineTd {
+            background-color: #EDEDED;
+        }
+
+        td[name="canclick"]:hover {
+			background-color: #40acb8;
+			color: White;
+		}
+
+        .titleTdBorder {
+            border: 0px solid #773C72;
+        }

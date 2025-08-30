@@ -1,0 +1,316 @@
+﻿.body {
+    margin: 0px;
+    padding: 0px;
+}
+
+/**/
+.bodyDiv {
+    /*width: 1080px;*/
+    background-color: white;
+    height: 100%;
+    margin: 0 auto;
+    /*border: 1px solid #B2B2B2;*/
+}
+/*headDiv 头部*/
+.headDiv {
+    background-color: white;
+    height: 90px;
+    /*    border-top: 10px solid #40acb8;  */
+    margin: 0 auto;
+}
+
+    .headDiv .logoAndTitleDiv {
+        background-color: blue;
+        margin-bottom: 25px;
+        margin-top: 8px;
+    }
+
+
+.titleRight {
+    margin-right: 20px;
+    font-size: 14px;
+    margin-top: 14px;
+    line-height: 40px;
+    height: 40px;
+}
+
+.timeDiv {
+    margin-right: 10px;
+}
+
+
+.titleMarginTop {
+    margin-top: 15px;
+}
+
+.mleft {
+    float: left;
+}
+
+.mright {
+    float: right;
+}
+
+
+
+
+/*navigate 导航*/
+.navigate {
+    background-color: #40acb8;
+    margin: 0 auto;
+}
+
+.myUl {
+    list-style: none;
+    margin: 0;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 0px;
+}
+
+    .myUl li {
+        display: inline-block;
+        /*border: solid 1px red;*/
+        width: 120px;
+        /* margin-left: 0px; */
+        text-align: center;
+        border-right: 1px solid white;
+        font-size: 14px;
+        float:left;
+    }
+
+    .myUl li:hover{background:#3cc7d7}
+
+        .myUl li a {
+            text-decoration: none;
+            font-weight:bold;
+        }
+
+            .myUl li a:link {
+                color: white;
+                text-decoration: none;
+
+            }
+
+            .myUl li a:active {
+                color: white;
+            }
+
+            .myUl li a:visited {
+                color: white;
+            }
+
+            .myUl li a:hover {
+                color: white;
+            }
+
+.firstLi {
+    border-left: 1px solid white;
+}
+
+.naTable {
+    width: 100%;
+    border: 1px solid #E3F3F5;
+    text-align: center;
+    font-size: 12px;
+    color: white;
+}
+
+    .naTable tr {
+        height: 28px;
+    }
+
+    .naTable tr {
+        height: 28px;
+    }
+
+        .naTable tr td {
+            border-right: 1px solid white;
+        }
+
+.tdWidth {
+    width: 100px;
+}
+
+.navigate_a {
+    color: white;
+}
+
+
+
+/*stiteMapDiv 站点地图*/
+.siteMapDiv {
+    margin: 5px;
+    border: 1px solid #EBEBEB;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+    .siteMapDiv img {
+        margin-left: 10px;
+    }
+
+/*renderBody 内容部分*/
+.renderBody {
+}
+
+/*lineSearch 公交线路搜索*/
+.lineSearch {
+    margin: 5px;
+    background-color: Gray;
+    font-size: 13px;
+    line-height: 40px;
+}
+/*footDiv 底部*/
+
+.footBody {
+    width: 100%;
+    background-color: #F1F1F1;
+}
+
+.footDiv {
+    width: 100%;
+    height: 150px;
+    background-color: #F1F1F1;
+    margin: 0 auto;
+}
+
+.siteInfo {
+    float: left;
+    margin-top: 50px;
+    margin-left: 60px;
+    line-height: 25px;
+}
+
+.weChat {
+    float: right;
+    margin-top: 20px;
+    margin-right: 140px;
+}
+
+
+
+/*滚动条*/
+.blankColor {
+    color: #000000;
+    font-size: 13px;
+}
+
+.bus-sub-line-item .unfold {
+    float: left;
+    padding-left: 25px;
+    background: url(http://webmap0.map.bdstatic.com/wolfman/static/common/images/ui3/bussub_bf9e598.png) no-repeat 0 8px;
+    color: #36C;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #999;
+}
+
+
+/*自适应*/
+/*@media screen and (min-width:380px)
+    {
+        .bodyDiv {width: 280px;}
+    }
+    @media screen and (min-width:1080px)
+    {
+        .bodyDiv {width: 780px;}
+    }*/
+
+
+@media screen and (min-width:0px) and (max-width:1366px) {
+
+    .bodyDiv, .headDiv, .navigate, .footDiv {
+        width: 1080px;
+    }
+
+
+    .logoImg {
+        width: 130px;
+        height: 50px;
+        display: block;
+        float: left;
+        margin-left: 10px;
+        margin-top: 10px;
+        background: url("../../../Resource/Images/sj/1366/1366_logo001.png") no-repeat;
+    }
+
+    .logoTitle {
+        margin-left: 5px;
+        font-weight: bold;
+        font-size: 25px;
+    }
+}
+
+@media screen and (min-width:1366px) {
+    .bodyDiv, .headDiv, .navigate, .footDiv {
+        width: 1080px;
+    }
+
+    .logoImg {
+        width: 130px;
+        height: 50px;
+        display: block;
+        float: left;
+        margin-left: 10px;
+        margin-top: 10px;
+        background: url("../../../Resource/Images/sj/1366/1366_logo001.png") no-repeat;
+    }
+
+    .logoTitle {
+        margin-left: 5px;
+        font-weight: bold;
+        font-size: 25px;
+    }
+}
+
+@media screen and (min-width:1920px) {
+    .bodyDiv, .headDiv, .navigate {
+        width: 1680px;
+    }
+
+    .logoImg {
+        width: 170px;
+        height: 70px;
+        display: block;
+        float: left;
+        margin-left: 10px;
+        margin-top: 10px;
+        background: url("../../../Resource/Images/sj/1920/1920_logo001.png") no-repeat 5px 5px;
+    }
+
+    .logoTitle {
+        margin-left: 5px;
+        font-weight: bold;
+        font-size: 40px;
+    }
+
+    .headDiv {
+        height: 130px;
+    }
+
+        .headDiv .logoAndTitleDiv {
+            margin-top: 16px;
+        }
+
+    .myUl {
+        height: 45px;
+        line-height: 45px;
+    }
+
+
+    .titleMarginTop {
+        margin-top: 18px;
+    }
+
+    .titleRight {
+        /*font-size: 18px;*/
+        margin-top: 43px;
+    }
+}

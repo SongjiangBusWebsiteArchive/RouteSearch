@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <title>站点查询</title>
+
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+  
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Resource/Css/sj/sjCommon.css" rel="stylesheet" />
+    <script src="/Resource/js/jquery-1.11.3.min.js"></script>
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        .topP {
+            margin: 0px;
+            padding: 0px;
+        }
+        .top1 {
+            background:#40acb8;
+             height:10px;   
+              }
+        .menu1 { 
+            margin:0 auto;
+            padding:0px;
+            background:#40acb8;
+             /*height:48px;*/
+        }
+        .warp {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .selected {
+            background-color: #3cc7d7;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(".myUl li").click(function () {
+                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');
+            })
+
+        })
+    </script>
+</head>
+<body>
+
+ 
+    <div class="topP" id="topP">
+        <div class="top1"></div>
+        <div class="warp">
+            <div class="headDiv" id="headDiv">
+                <div class="logoAndTitleDiv">
+                    <div class="logoContent ">
+                        <div>
+                            
+                            
+
+                            <div class="logoImg mleft"></div>
+                            <div class="logoTitle mleft titleMarginTop">市民公交出行</div>
+                        </div>
+
+                        <div class="titleRight mright ">
+
+                            <div class="timeDiv mleft ">
+                                2025年08月30日
+                            </div>
+
+                            <div class="weathDiv mleft ">
+                                   <span class="cityclass"></span>&nbsp;
+                                   <img class="weatherPicClass" src="" />&nbsp;
+                                   <span class="weatherTxtClass"></span>&nbsp;
+                             </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="menu1" id="menu1">
+        <div class="warp">
+            <div class="navigate" id="navigate">
+                <ul class="myUl">
+                    <li class="firstLi" id="Li1"><a href="/RoadLineClassification/Index" class="navigate_a">松江公交线路</a></li>
+                    <li id="Li2"><a href="/FirstAndLastBus/Index" class="navigate_a">公交首末班</a></li>
+                    <li id="Li3"><a href="/RoadLinePivot/Index" class="navigate_a">枢纽站信息</a></li>
+                    <li id="Li4"><a href="/MapCityAndCountrySide/Index?type=城区" class="navigate_a">城区公交线路图</a></li>
+                    <li id="Li5"><a href="/MapCityAndCountrySide/Index?type=乡镇" class="navigate_a">乡镇公交线路图</a></li>
+                    <li id="Li6"><a href="/StationClassFind/Index" class="navigate_a">站点查询</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="bodyDiv" id="bodyDiv">
+      
+        <div class="siteMapDiv" id="siteMapDiv">
+            <div style="float:left;margin-right:5px;">
+                <img src="../Resource/Images/sj/home.png" />
+            </div>
+            <div>>站点查询</div>
+        </div>
+
+        <div class="renderBody">
+            
+<link href="/Resource/Content/map.css" rel="stylesheet" />
+<link href="/Resource/Css/sj/sjStationClassFind.css" rel="stylesheet" />
+<script type="text/javascript" src="http://api.mapbar.com/api/mapbar31.2.js"></script>
+<script src="/Resource/js/plugins/layer/layer.min.js"></script>
+<script src="/Resource/js/sj/sjCommon.js"></script>
+<style type="text/css">
+    .tiplabel {
+        height: 20px;
+    }
+</style>
+<script type="text/javascript">
+
+    var songJiangFence = "";
+
+    $(function () {
+        $("#Li6").addClass('selected');
+        initMap();
+        //ShowPicList("yp249");
+        ShowFence(songJiangFence,maplet);
+    })
+
+    var maplet = null; //地图对象
+    var marker = null; //标注对象
+    var menu = null;
+    var indexcity = "上海市";
+    var apiType = 1; //是否为明文经纬度
+    function initMap() {
+        try {
+            maplet = new Maplet("maps");
+        }
+        catch (ex) {
+            window.alert("地图加载失败，请刷新重试！");
+            return;
+        }
+        maplet.centerAndZoom(new MPoint(indexcity), 11); //设置默认城市和缩放级别
+        maplet.addControl(new MStandardControl());
+        //设置鱼骨 LEFT_TOP  LEFT_BOTTOM RIGHT_TOP  RIGHT_BOTTOM
+        maplet.controlCanvas.setLocation({ type: eval("Maplet.RIGHT_TOP") });
+
+        maplet.showLogo(false); //隐藏Logo 等等一些信息
+        maplet.showNavLogo(false);
+        maplet.clickToCenter = false; //点击了之后是否将点击的位置设置为中心点
+        maplet.setAutoZoom(); //设置更具地图自动适应
+        maplet.customInfoWindow = true;
+        maplet.setOverviewLocation({ type: eval("Maplet.RIGHT_BOTTOM") })//设置鹰眼的位置
+        var width = $("#bodyDiv").width(); //document.documentElement.clientWidth - 10.5;
+        var height = $(window).height() - $("#topP").height() - $("#menu1").height() - $("#siteMapDiv").height() - 10;
+        maplet.resize(width, height); //地图初始化时候的大小
+
+        $("#srollDiv").height(height - 70);
+        $("#resultcontent").height(height - 115);
+
+
+
+    }
+
+    function SerachBtnClick() {
+        var selectRoadLine = $("#dropRoadLine").val();
+        if (selectRoadLine != "") {
+            $("#cards").show();
+            //$("#cards").attr("display", "");
+            SearchRoadLine(selectRoadLine)
+
+        }
+    }
+
+    function SearchRoadLine(stationName) {
+        var mPointList = [];
+        $.ajax({
+            type: "GET",
+            url: "/StationClassFind/Search",
+            data: { stationName: stationName },
+            dataType: "json",
+            success: function (data) {
+
+                $("#resultcontent").html("");
+
+                if (data != null && data.length > 0) {
+                    var PointsTr = "<div style='font-size:12px;'><table  Id='TblMap'>";
+                    var item = data;
+                    for (var i = 0; i < item.length; i++) {
+
+
+
+                        var lineList = item[i].LINELIST.split(",");
+                        var strLatLon = item[i].StrLon02 + "," + item[i].StrLat02;
+
+
+                        PointsTr += "<tr><td style='padding: 10px 0;width: 460px;border-bottom: 1px solid #f7f7f7;'>";
+                        PointsTr += "<div class='cf' >";
+                        PointsTr += "<div class='col-l' style='float:left;'>";
+                        PointsTr += "<a href='javascript:void(0)' class='no-1' style='float:left;'>";
+                        PointsTr += i + 1;
+                        PointsTr += "</a>";
+                        PointsTr += "</div>";
+                        PointsTr += "<div class='ml_30 ' style='margin-left: 50px!important;'>";
+                        PointsTr += "<div class='row'>";
+                        PointsTr += "	<span>";
+                        PointsTr += "		<a href='javascript:void(0);' class='n-blue' onclick='LatLonToCenter(\"" + strLatLon + "\",false)'>";
+                        PointsTr += item[i].StationName;
+                        PointsTr += "		</a>";
+                        PointsTr += "	</span>";
+                        PointsTr += "	<span class='span_right' style='font-size:14px;'>";
+                        PointsTr += "		<a href='javascript:void(0)'  class='camera-icon street-pano ml_5' onclick='javascript:openimage(\"" + item[i].Stationcode + "\")'>";
+                        PointsTr += "			&nbsp;";
+                        PointsTr += "		</a>";
+                        PointsTr += "	</span>";
+                        PointsTr += "	<span>";
+                        PointsTr += "	</span>";
+                        PointsTr += "</div>";
+                        PointsTr += "<div class='row addr' style='margin-top:10px;'>";
+                        PointsTr += "		<span class='n-grey' title='" + item[i].Stationcode + "' style='font-size:12px;background-color:#0260d4; margin-right:10px;margin-right: 10px;color: #fff;border-radius: 2px;padding: 2px;'>";
+                        PointsTr += item[i].Stationcode;
+                        PointsTr += "	</span>";
+                        PointsTr += "		<span class='n-grey' title='" + item[i].StationAddress + "' style='font-size:12px;'>";
+                        PointsTr += item[i].StationAddress;
+                        PointsTr += "	</span>";
+                        PointsTr += "</div>";
+						console.log(lineList,lineList.length);
+                        if (lineList.length != 0 && item[i].LineList != "") {
+                            var linestr = "";
+                            for (var j = 0; j < lineList.length; j++) {
+                                if ($.trim(lineList[j]) != "") {
+									var linearray = $.trim(lineList[j]).split("、");
+									for (var k = 0; k < linearray.length; k++) {
+										linestr += "<span style='color:#3366cc;font-size:12px;padding: 2px 8px;border: 1px solid #ededed;border-radius: 2px;margin-left: 3px;'><a href='javascript:;' onclick='javascript:searchroadline(\"" + linearray[k] + "\",\"" + item[i].Stationcode + "\",\"" + strLatLon + "\")'>" + linearray[k] + "</a></span>";
+									}
+                                }
+                            }
+                            PointsTr += "<div class='row addr myLineHeight' style='margin-top:10px;'>";
+                            PointsTr += "		<span class='n-grey'  style='font-size:12px;'>";
+                            PointsTr += "线路：";
+                            PointsTr += "	</span>";
+                            PointsTr += "		<span class='n-grey'  >";
+                            PointsTr += linestr;
+                            PointsTr += "	</span>";
+                            PointsTr += "</div>";
+                        }
+                        PointsTr += "<div class='children-container row'>";
+                        PointsTr += "</div>";
+                        PointsTr += "</div>";
+                        PointsTr += "</div>";
+
+                        PointsTr += "</td></tr>";
+
+
+
+                        //地图上marker 点
+                        var icourl = "/Resource/Images/icons/1/icon_03.png";
+                        var point = new MPoint(item[i].StrLon02, item[i].StrLat02); //坐标点
+                        var marker = new MMarker(point, new MIcon(icourl, 16, 16));
+                        var strlineList = "";
+
+                        for (var j = 0; j < lineList.length; j++) {
+                            if ($.trim(lineList[j]) != "") {
+                                var linearray = $.trim(lineList[j]).split("、");
+                                for (var k = 0; k < linearray.length; k++) {
+                                    if (strlineList != "") {
+                                        strlineList += "、<a href='javascript:;' onclick='javascript:searchroadline(\"" + linearray[k] + "\",\"" + item[i].Stationcode + "\",\"" + strLatLon + "\")'>" + linearray[k] + "</a>"
+                                    } else {
+                                        strlineList += "<a href='javascript:;' onclick='javascript:searchroadline(\"" + linearray[k] + "\",\"" + item[i].Stationcode + "\",\"" + strLatLon + "\")'>" + linearray[k] + "</a>"
+                                    }
+                                }
+                            }
+                        }
+
+                        var labl = item[i].StationName; //标签点的名称
+                        var height = 183;
+                        var str_div = "<div id='RoundedCorner" + i + "' style='height:" + height + "px;width:280px;border-top:1px solid #7b9ebd;background-image:url(/Resource/images/imgs/03.png);border-left:1px solid #008d44;border-right:1px solid #008d44;margin-top:-250px; margin-left:-164px'>";
+                        str_div += "<div style=' width:100%; height:30px; z-index:100; background-image:url(/Resource/images/imgs/1.jpg);font-size:12px; line-height:30px; color:#fff; '><span style=' float:left; padding-left:10px'>公交站点：" + labl + "</span><img src='/Resource/Images/imgs/close.jpg' style=' float:right;text-decoration:none;margin-top:5px;cursor:pointer' onclick='colse(RoundedCorner" + i + ")'/></div>";
+
+                        str_div += "<div style='width:100%; height:150px;overflow-y:scroll;'>";
+
+                        str_div += "<table style='font-size: 12px;'><tr><td style='width:60px'>站点站址</td><td  >" + item[i].StationAddress + "</td></tr>";
+                        str_div += "<tr><td>停靠线路</td><td >" + strlineList + "</td></tr>";
+                        str_div += "<tr><td>站点编号</td><td ><span href='javascript:;' onclick='javascript:linkztsystem(\"" + item[i].Stationcode + "\")'>" + item[i].Stationcode + "</span></td></tr>";
+                        str_div += "<tr><td>资产编号</td><td>" + item[i].AssetNumber + "</td></tr>";
+                        str_div += "<tr><td>站点照片</td><td ><a href='javascript:;' onclick='javascript:openimage(\"" + item[i].Stationcode + "\")'>点击查看照片</a></td></tr>";
+                        str_div += "</table>";
+                        str_div += "</div>";
+                        str_div += "<div style='display:none;'>[" + labl + "]</div>";
+
+
+                        str_div += "<div style='width:100%; background-image:url(/Resource/images/imgs/0300_02.png); height:69px;overflow:hidden; background-position:-10px' ></div></div>";
+                        if (strLatLon != null && strLatLon != "") {
+                            var m_window = new MInfoWindow("11", str_div);
+                            marker.info = m_window;
+                            marker.setLabel(new MLabel(labl), true); //添加标签
+                            marker.label.setVisible(false)//隐藏标签
+
+                            maplet.addOverlay(marker);
+                            MEvent.addListener(marker, "iw_beforeopen", showCustomIw);
+                        }
+
+                        //marker.bEditable = true;
+                        // 添加对marker 的事件
+                        if (strLatLon != null && strLatLon != "") {
+                            MEvent.addListener(marker, "click", function (omarker) {
+                                omarker.openInfoWindow();
+                            });
+                            //omarker.
+                            MEvent.addListener(marker, "mouseover", function (mk) {
+                                if (mk.label) mk.label.setVisible(true);
+                            })
+                            MEvent.addListener(marker, "mouseout", function (mk) {
+                                if (mk.label) mk.label.setVisible(false);
+                            })
+                            //points.push(marker);
+                            maplet.addOverlay(marker);
+                        }
+
+                        if (strLatLon != null && strLatLon != "") {
+                            //将地图移动到中心位置
+                            //            maplet.centerAndZoom(point, 20);
+                            //if (i == parseInt(item.length / 2)) {
+                            //maplet.centerAndZoom(point, 11);
+                            //}
+                        }
+
+
+
+
+                    }//for (var i = 0; i < item.length; i++)
+
+                    PointsTr += "</table></div>";
+
+
+                    $("#resultcontent").html(PointsTr);
+
+                    maplet.setAutoZoom(); //设置更具地图自动适应
+                }
+
+            }
+        });
+
+    }
+
+    var p = null;
+
+    function showCustomIw(overlay, x, y) {
+        if (p != null) {
+            maplet.removePanel(p, true);
+        }
+        openv = overlay.info.title;
+        mk = overlay;
+        var showY = 0;
+        var height = overlay.info.content.substring(overlay.info.content.indexOf(":") + 1, overlay.info.content.indexOf("px"));
+        showY = 228 - height;
+
+        var options = {
+            pin: true,
+            zindex: 5,
+            content: overlay.info.content,
+            //location: { type: "xy", x: x - 170, y: y - 400 + showY },
+            location: { type: "xy", x: x, y: y },
+            zoomhide: true
+        };
+        if (x < 300 && y < 350) {
+            maplet.panTo(300 - x, 350 - y);
+        }
+        else if (y < 350) {
+            maplet.panTo(0, 350 - y);
+        }
+        else if (x < 300) {
+            maplet.panTo(300 - x, 0);
+        }
+        else if (x > $(window).width() - 100) {
+            maplet.panTo(-250, 0);
+        }
+
+        p = new MPanel(options);
+        MPanel.enableDragMap(p.dom, true);
+        maplet.addPanel(p);
+
+    }
+
+
+    function colse(id) {
+        $(id).hide();
+        openv = "";
+        mk = null;
+    }
+
+
+    //设置位置为中心点
+    function LatLonToCenter(strlatlon) {
+
+        if (strlatlon == null || strlatlon == undefined || strlatlon == "") {
+            window.alert("当前经纬度值为空或者无效！");
+        }
+        else {
+            var lat = strlatlon.split(',')[0];
+            var lon = strlatlon.split(',')[1]
+            maplet.centerAndZoom(new MPoint(lat, lon), 30);
+        }
+
+    }
+
+
+    function ShowPicList(stopId) {
+        $("#picShowDiv").css("display", "")
+
+        $.ajax({
+            type: "GET",
+            url: "/StationClassFind/SearchPic",
+            data: { stopId: stopId },
+            dataType: "json",
+            success: function (data) {
+
+
+                var dic = data["Dic"];
+                var myUrl = data["url"];
+                var picStr = "";
+
+                var stationDetail = data["stationDetail"];
+                if (stationDetail != null && stationDetail != "" && stationDetail.length > 0) {
+                    $("#Area").html(stationDetail[0].Area);
+                    $("#District").html(stationDetail[0].District);
+                    $("#RoadName").html(stationDetail[0].RoadName);
+                    $("#StationName").html(stationDetail[0].StationName);
+
+                    $("#mySattionName").html(stationDetail[0].StationName);
+
+                    $("#StationAddress").html(stationDetail[0].StationAddress);
+
+                    $("#StationCode").html(stationDetail[0].StationCode);
+                    $("#PathDirection").html(stationDetail[0].PathDirection);
+                    $("#StationCount").html(stationDetail[0].StationCount);
+                    $("#PoleCount").html(stationDetail[0].PoleCount);
+                    $("#LineList").html(stationDetail[0].LineList);
+
+
+                }
+
+                if (dic != null && dic != "") {
+                    dic = eval('(' + dic + ')')
+
+                    picStr += '<div class="timeFolderArea">';
+
+                    for (var key in dic) {
+                        picStr += ' <div class="row">';
+                        picStr += '<div class="toggleClass" onclick="OnClickToggle(this)" toggleClass >';
+                        picStr += '<div class="timeDiv">';
+                        picStr += '<div class="toggleIcon">';
+                        picStr += '</div>';
+                        picStr += '<div class="timeId">';
+                        picStr += key;
+                        picStr += '</div>';
+                        picStr += '</div>';
+                        picStr += '<hr class="hr3" />';
+                        picStr += '</div>';
+                        picStr += '<div class="displayImagesArea">';
+                        picStr += '<ul>';
+
+                        for (var obj in dic[key]) {
+                            var capitalNumber = dic[key][obj]["CapitalNumber"];
+                            if (capitalNumber != "" && capitalNumber != null) {
+                                var images = dic[key][obj]["Images"];
+                                var time = key.replace("年", "-").replace("月", "-").replace("日", "");
+                                //var imageStr = Convert.ToString(time);
+                                if (images != null && images != "") {
+                                    //var fileFolder = Path.GetFileNameWithoutExtension(images[0].ToString());
+                                    var fileFolder = images[0].split('.')[0];
+                                    //var imageP = string.Format("{0}/{1}/{2}/{3}/{4}/{5}", url, StopId, time, capitalNumber, fileFolder, "1.jpg");
+                                    var imageP = myUrl + "/" + stopId + "/" + time + "/" + capitalNumber + "/" + "/" + fileFolder + "/" + "1.jpg"
+
+                                    picStr += '<li>';
+                                    picStr += '<div class="singleDisplay">';
+                                    picStr += '<div class="capitalImage" style=" background-image:url(' + imageP + ');" onclick="OnClickImage(\'' + stopId + '\',\'' + key + '\',\'' + capitalNumber + '\')">';
+                                    picStr += '</div>';
+                                    picStr += '<div class="capitalNumber">';
+                                    picStr += '编号：' + capitalNumber;
+                                    picStr += '</div>';
+                                    picStr += '</div>';
+                                    picStr += '</li>';
+
+                                }
+                            }
+                        }
+                        picStr += '</ul>';
+                        picStr += '</div>';
+                        picStr += '</div>';
+
+
+                    }//for (var key in dic)
+                    picStr += '</div>';
+
+
+
+
+                }
+
+                $("#picList").html(picStr);
+            }
+        });
+
+
+
+
+    }
+
+
+    function openimage(stopId) {
+        ShowPicList(stopId)
+    }
+
+    function HiddenPicList() {
+        $("#picShowDiv").css("display", "none");
+    }
+
+
+    function searchroadline(roadLine) {
+        window.open("/RoadLineFind/Index?roadline=" + roadLine);
+    }
+
+
+
+</script>
+
+
+<script type="text/javascript">
+   
+    function OnClickToggle(id) {
+        $(id).next().toggle();
+        if ($(id).next().is(':visible')) {
+            $(id).find(".toggleIcon").css("background", "url(../Resource/Images/imgprev/icon3.png)");
+        } else {
+            $(id).find(".toggleIcon").css("background", "url(../Resource/Images/imgprev/icon2.png)");
+        }
+    }
+
+
+    function OnClickImage(stopId, date, capitalNumber) {
+
+        var url = "ImageDisplay?stopId=" + stopId + "&date=" + date + "&capitalNumber=" + capitalNumber;
+
+        if ($(window).width() > 1366) {
+            layer.open({
+                type: 2,
+                title: false,
+                shade: 0.6,
+                area: ['933px', '780px'],
+                content: url
+            });
+        }
+        else {
+            layer.open({
+                type: 2,
+                title: false,
+                shade: 0.6,
+                area: ['600px', '525px'],
+                content: url
+            });
+        }
+
+    }
+
+</script>
+
+
+
+
+<div class="container" style="width:100%;height:100%;position:relative;overflow:hidden;padding-left:5px;">
+    <div class="showMap" id="maps">
+
+    </div>
+
+
+    <div class="showSearch" id="showSearch">
+        <div class="searchInput">
+            <div style="float:left">
+                <input type="text" class="serachSelect" id="dropRoadLine" placeholder="请输入站点名称" />
+
+            </div>
+            <button class="search-button" data-title="搜索" title="搜索" onclick="SerachBtnClick()"></button>
+        </div>
+
+        <div style="clear:both;"></div>
+        <div id="srollDiv">
+
+
+            <ul id="cards" class="cardlist" style="padding-left: 0px;">
+                <li id="resultcontent" class="card animated-card" style="z-index: 100;">
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div class="picShowDiv" id="picShowDiv" style="display:none;">
+        <div class="headTile"><span id="mySattionName"></span>-站点照片 <img src="/Resource/Images/sj/cancle.png" onclick="HiddenPicList()" /></div>
+        <div id="topId" class="topId">
+
+            
+            <table>
+
+                <tr>
+                    <td style="width:15%">
+                        环域: <span id="Area"></span>
+                    </td>
+                    <td style="width:15%">
+                        区属:<span id="District"></span>
+                    </td>
+                    <td style="width: 15%">
+                        路名: <span id="RoadName"></span>
+                    </td>
+                    <td style="width: 55%">
+                        站址: <span id="StationAddress"></span>
+                    </td>
+                   
+                </tr>
+
+
+                <tr>
+                    <td >
+                        站名: <span id="StationName"></span>
+                    </td>
+                    <td>
+                        站点编号: <span id="StationCode"></span>
+                    </td>
+                    <td>
+                        车向:<span id="PathDirection"></span>
+                    </td>
+                    
+                    <td>
+                        停靠线路:<span id="LineList"></span>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div style="clear:both;"></div>
+        <div class="picList" id="picList">
+
+        </div>
+
+    </div>
+
+   </div>
+
+        </div>
+    
+    </div>
+
+    <div class="footBody">
+
+        <div class="footDiv">
+
+            <div class="siteInfo">
+                版权所有：上海松江公共交通有限公司沪ICP备<br />
+                地址：松江区茸惠路558号&nbsp;邮编：201613&nbsp;服务电话：021-57821111&nbsp;邮箱:sjgjts@163.com
+            </div>
+
+            <div class="weChat">
+                <div>
+                    松江公交官方微信
+                </div>
+                <div>
+
+                    <img src="../Resource/Images/sj/webChatUrl2.jpg" style="width:95px;" />
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

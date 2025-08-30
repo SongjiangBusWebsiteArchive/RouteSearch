@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <title>公交首末班车</title>
+
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+  
+    <link href="/Resource/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Resource/Css/sj/sjCommon.css" rel="stylesheet" />
+    <script src="/Resource/js/jquery-1.11.3.min.js"></script>
+    <script src="/Resource/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        .topP {
+            margin: 0px;
+            padding: 0px;
+        }
+        .top1 {
+            background:#40acb8;
+             height:10px;   
+              }
+        .menu1 { 
+            margin:0 auto;
+            padding:0px;
+            background:#40acb8;
+             /*height:48px;*/
+        }
+        .warp {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .selected {
+            background-color: #3cc7d7;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(".myUl li").click(function () {
+                $(this).siblings('li').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');
+            })
+
+        })
+    </script>
+</head>
+<body>
+
+ 
+    <div class="topP" id="topP">
+        <div class="top1"></div>
+        <div class="warp">
+            <div class="headDiv" id="headDiv">
+                <div class="logoAndTitleDiv">
+                    <div class="logoContent ">
+                        <div>
+                            
+                            
+
+                            <div class="logoImg mleft"></div>
+                            <div class="logoTitle mleft titleMarginTop">市民公交出行</div>
+                        </div>
+
+                        <div class="titleRight mright ">
+
+                            <div class="timeDiv mleft ">
+                                2025年08月30日
+                            </div>
+
+                            <div class="weathDiv mleft ">
+                                   <span class="cityclass"></span>&nbsp;
+                                   <img class="weatherPicClass" src="" />&nbsp;
+                                   <span class="weatherTxtClass"></span>&nbsp;
+                             </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="menu1" id="menu1">
+        <div class="warp">
+            <div class="navigate" id="navigate">
+                <ul class="myUl">
+                    <li class="firstLi" id="Li1"><a href="/RoadLineClassification/Index" class="navigate_a">松江公交线路</a></li>
+                    <li id="Li2"><a href="/FirstAndLastBus/Index" class="navigate_a">公交首末班</a></li>
+                    <li id="Li3"><a href="/RoadLinePivot/Index" class="navigate_a">枢纽站信息</a></li>
+                    <li id="Li4"><a href="/MapCityAndCountrySide/Index?type=城区" class="navigate_a">城区公交线路图</a></li>
+                    <li id="Li5"><a href="/MapCityAndCountrySide/Index?type=乡镇" class="navigate_a">乡镇公交线路图</a></li>
+                    <li id="Li6"><a href="/StationClassFind/Index" class="navigate_a">站点查询</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="bodyDiv" id="bodyDiv">
+      
+        <div class="siteMapDiv" id="siteMapDiv">
+            <div style="float:left;margin-right:5px;">
+                <img src="../Resource/Images/sj/home.png" />
+            </div>
+            <div>>公交首末班车</div>
+        </div>
+
+        <div class="renderBody">
+            
+<link href="/Resource/Css/sj/sjFirstAndLastCar.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+        $("#Li2").addClass('selected');
+        SerchList('','');
+    });
+
+    function MySerchList() {
+        SerchList('', $.trim($("#inputValue").val()));
+    }
+
+    function SerchList(roadLineType, roadLine) {
+       
+        $.ajax({
+            type: "GET",
+            url: "/FirstAndLastBus/Search",
+            data: { roadLineType: roadLineType, roadLine: roadLine },
+            dataType: "json",
+            success: function (data) {
+                $("#showTable  tr:not(:first)").remove();
+
+                for (var i = 0; i < data.length; i++) {
+                    var html = '';
+                    html += '<tr>';
+                    html += '<td  class="rodalineTd" name="canclick" onclick=OpenFindRoadLinePage("' + data[i].RoadLine + '")>' + data[i].RoadLine + '</td>';
+                    html += '<td>' + data[i].Startstation1+ '</td>';
+                    html += '<td>' + data[i].Startbegintime1+ '</td>';
+                    html += '<td>' + data[i].Startendtime1+ '</td>';
+                    html += '<td>' + data[i].Startstation2+ '</td>';
+                    html += '<td>' + data[i].Startbegintime2+ '</td>';
+                    html += '<td>' + data[i].Startendtime2 + '</td>';
+                    html += '</tr>';
+                    $("#showTable").append(html);
+                }
+            }
+        });
+    }
+
+    function OpenFindRoadLinePage(roadLine) {
+        //window.open("/RoadLineFind/Index?roadline=" + roadLine);
+        window.location.href = "/RoadLineFind/Index?roadline=" + roadLine;
+    }
+</script>
+
+<div class="searchDiv">
+    <div class="allChoseDiv">
+        <div class="choseDiv" >
+            <a href="javascript:SerchList('区域内线路');">区域内线路</a>
+        </div>
+        <div class="choseDiv">
+            <a href="javascript:SerchList('跨区域线路');">跨区域线路</a>
+		</div>
+        <div class="choseDiv">
+            <a href="javascript:SerchList('村村通线路');">村村通线路</a>
+		</div>
+        <div class="choseDiv">
+            <a href="javascript:SerchList('穿梭巴士');">穿梭巴士</a>
+		</div>
+        <div class="searchInputDiv">
+            <input type="text" placeholder="请输入线路" style="border-radius: 5px 5px;" id="inputValue"/><input type="button" class="serarchBtn" value="搜索" onclick="MySerchList()" />
+        </div>
+    </div>
+</div>
+
+<div class="contentDiv">
+    <table class="contentTable"  id="showTable">
+        <tr style="background-color:#773C72;border:0px solid #773C72;color:white;">
+            <td style="border:0px solid #773C72;">线路名</td>
+            <td style="border:0px solid #773C72;">起始站名</td>
+            <td style="border:0px solid #773C72;">首班时间</td>
+            <td style="border:0px solid #773C72;">末班时间</td>
+            <td style="border:0px solid #773C72;">终点站名</td>
+            <td style="border:0px solid #773C72;">首班时间</td>
+            <td style="border:0px solid #773C72;">末班时间</td>
+        </tr>
+
+        
+
+    </table>
+</div>
+
+        </div>
+    
+    </div>
+
+    <div class="footBody">
+
+        <div class="footDiv">
+
+            <div class="siteInfo">
+                版权所有：上海松江公共交通有限公司沪ICP备<br />
+                地址：松江区茸惠路558号&nbsp;邮编：201613&nbsp;服务电话：021-57821111&nbsp;邮箱:sjgjts@163.com
+            </div>
+
+            <div class="weChat">
+                <div>
+                    松江公交官方微信
+                </div>
+                <div>
+
+                    <img src="../Resource/Images/sj/webChatUrl2.jpg" style="width:95px;" />
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
