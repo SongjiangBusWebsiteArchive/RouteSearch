@@ -198,7 +198,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/RoadLineFind/Search",
+            url: "/RoadLineFind/Search/" + roadLineName + ".json",
             data: { roadLine: roadLineName },
             dataType: "json",
             success: function (data) {

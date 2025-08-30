@@ -187,7 +187,7 @@
         var mPointList = [];
         $.ajax({
             type: "GET",
-            url: "/StationClassFind/Search",
+            url: "/StationClassFind/Search/result.json",
             data: { stationName: stationName },
             dataType: "json",
             success: function (data) {
@@ -199,7 +199,7 @@
                     var item = data;
                     for (var i = 0; i < item.length; i++) {
 
-
+                        if(!item[i].StationName.includes(stationName)) continue;
 
                         var lineList = item[i].LINELIST.split(",");
                         var strLatLon = item[i].StrLon02 + "," + item[i].StrLat02;

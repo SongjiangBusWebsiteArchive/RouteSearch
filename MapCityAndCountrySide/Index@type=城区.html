@@ -184,7 +184,7 @@
         var mPointList = [];
         $.ajax({
             type: "GET",
-            url: "/MapCityAndCountrySide/Search",
+            url: "/MapCityAndCountrySide/Search" + "/城区.json",
             data: { type: '城区' },
             dataType: "json",
             success: function (data) {
