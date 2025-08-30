@@ -1,0 +1,176 @@
+﻿
+    .showMap {
+        width: 100%;
+        height: 800px;
+        background-color: green;
+        float:left;
+    }
+
+@media screen and (min-width:0px) and (max-width:1366px) {
+    .showSearch {
+        width: 300px;
+        height: 700px;
+        /*background-color: #ffd800;*/
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+}
+
+@media screen and (min-width:1366px) {
+    .showSearch {
+        width: 300px;
+        height: 700px;
+        /*background-color: #ffd800;*/
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+}
+
+@media screen and (min-width:1920px) {
+    .showSearch {
+        width: 307px;
+        height: 820px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+}
+
+    #srollDiv {
+        width:100%;
+        overflow-y: auto;
+        margin-top:5px;
+    }
+
+     .search-button {
+        pointer-events: auto;
+        background: url("/Resource/Images/sj/searchbox_f1755771.png") no-repeat 0 -76px #2e77e5;
+        width: 57px;
+        height: 38px;
+        float: left;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 0 2px 2px 0;
+        box-shadow: 1px 2px 1px rgba(0,0,0,.15);
+    }
+
+    .serachSelect {
+        width: 100%;
+        width: 243px;
+        height: 38px;
+    }
+
+    .showMap .showDiv {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .roadLineTitle {
+        width: 100%;
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        background-color: #188AE0;
+    }
+
+    .commonMessage {
+        width: 100%;
+        background-color: #E7F3FC;
+    }
+
+    .roadLienMessage {
+        background-color: #E7F3FC;
+        width: 100%;
+    }
+
+    .marginClass {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .toDirectTitleDiv {
+        margin-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .toDirectConentDiv {
+        border: 1px solid #65BEFF;
+        background-color: white;
+        min-height:30px;
+    }
+
+    .roadLineMessageTable {
+        width: 100%;
+    }
+
+        .roadLineMessageTable tr td {
+            width: 33.33%;
+            text-align: left;
+            background-color: #E7F3FC;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+
+    .stationList {
+        background-color: white;
+        width: 100%;
+        padding-top: 1px;
+        padding-bottom: 10px;
+    }
+
+
+    .stationTableDiv {
+        margin-top: 10px;
+        /*border: 1px solid #8BCDD4;*/
+    }
+
+    .stationTable {
+        width: 100%;
+        border: 1px solid #8BCDD4;
+        margin-top:10px;
+    }
+
+    .column1 {
+        text-align: left;
+        padding-left: 5px;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .column_other {
+        text-align: center;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .rowHeader {
+        font-weight: bold;
+        background-color: #40ACB8;
+        color: white;
+    }
+
+
+    .upAndDownTitle {
+        background-color: #40ACB8;
+        color: white;
+        padding-top:5px;
+        padding-bottom:5px;
+    }
+
+    .updownCharacter {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
