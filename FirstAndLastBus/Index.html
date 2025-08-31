@@ -132,13 +132,15 @@
        
         $.ajax({
             type: "GET",
-            url: "/FirstAndLastBus/Search/result.json",
+            url: "/FirstAndLastBus/Search/result_" + (roadLineType || "default") + ".json",
             data: { roadLineType: roadLineType, roadLine: roadLine },
             dataType: "json",
             success: function (data) {
                 $("#showTable  tr:not(:first)").remove();
 
                 for (var i = 0; i < data.length; i++) {
+                    if(roadLine && !data[i].RoadLine.includes(roadLine)) continue;
+
                     var html = '';
                     html += '<tr>';
                     html += '<td  class="rodalineTd" name="canclick" onclick=OpenFindRoadLinePage("' + data[i].RoadLine + '")>' + data[i].RoadLine + '</td>';
